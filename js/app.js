@@ -1,9 +1,9 @@
 function initMap() {
   var laboratoriaLima = {lat:-12.1191427, lng:-77.0349046};
-  var mapita= new google.maps.Map(document.getElementById('map'),
+  var mapa= new google.maps.Map(document.getElementById('map'),
                               {zoom:18, center:laboratoriaLima});
 
-  var marcadorlaboratoria = new google.maps.Marker({position: laboratoriaLima, map: mapita});
+  var marcadorlaboratoria = new google.maps.Marker({position: laboratoriaLima, map: mapa});
 
   function buscar (){
     if (navigator.geolocation) {
@@ -17,7 +17,7 @@ function initMap() {
     latitud = posicion.coords.latitude;
     longitud = posicion.coords.longitude;
 
-    var mapa= new google.maps.Map(document.getElementById('map'));
+    // var mapa= new google.maps.Map(document.getElementById('map'));
 
     var miUbicacion = new google.maps.Marker({
       position:{lat:latitud, lng:longitud},
@@ -28,7 +28,7 @@ function initMap() {
   }
 
   var funcionError=function(error) {
-    alert("sdsds");
+    alert("Tenemos un problema con encontrar tu posicion actual");
   }
 
   document.getElementById('encuentrame').addEventListener("click", buscar);
