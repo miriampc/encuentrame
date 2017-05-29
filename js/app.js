@@ -3,8 +3,7 @@ function initMap() {
   var laboratoriaLima = {lat:-12.1191427, lng:-77.0349046};
   var mapa= new google.maps.Map(document.getElementById('map'),
                               {zoom:18, center:laboratoriaLima});
-
-  // var marcadorlaboratoria = new google.maps.Marker({position: laboratoriaLima, map: mapa});
+// var marcadorlaboratoria = new google.maps.Marker({position: laboratoriaLima, map: mapa});
 
 // Capturando punto partida y punto destino con autocompletado en inputs
   var inputPartida = document.getElementById('partida');
@@ -13,11 +12,6 @@ function initMap() {
 
   new google.maps.places.Autocomplete(inputPartida);
   new google.maps.places.Autocomplete(inputDestino);
-
-  var directionsService = new google.maps.DirectionsService;
-  var directionsDisplay = new google.maps.DirectionsRenderer;
-
-
 
   function buscar (e){
     e.preventDefault();
@@ -42,6 +36,8 @@ function initMap() {
     alert("Tenemos un problema con encontrar tu posicion actual");
   }
 
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
   var calculateAndDisplayRoute = function(directionsService, directionsDisplay){
       directionsService.route({
         origin: inputPartida.value,
@@ -52,22 +48,23 @@ function initMap() {
           console.log(response.routes[0].legs[0].distance.text);
           var distance1 = response.routes[0].legs[0].distance.value/1000;
           var distancia = Number((response.routes[0].legs[0].distance.text.replace(" km","")).replace(",","."));
+          var duracion = response.routes[0].legs[0].duration.text;
 
           tarifa.classList.remove("none");
-          var costo = distancia*1.75;
-          console.log(typeof costo);
+          var costo = distance1*1.75;
           if (costo < 4) {
-            tarifa.appendChild(document.createTextNode("S/. 4.00"));
-          }else{
-            tarifa.innerHTML=`S/. ${parseInt(costo)}`;
+            document.getElementById('tarifa').innerHTML="";
+            tarifa.appendChild(document.createTextNode("S/. 4.00 llegaras en: " + duracion));
+          } else {
+            tarifa.innerHTML=`S/. ${parseInt(costo)}, llegaras en: ${duracion}`;
           }
-          console.log(response.routes[0].legs[0].distance.text);
+
           directionsDisplay.setDirections(response);
-          if(miUbicacion!==undefined){
-            miUbicacion.setMap(null);
-          }else {
-            window.alert("No encontramos");
-          }
+          // if(miUbicacion!==undefined){
+          //   miUbicacion.setMap(null);
+          // }else {
+          //   window.alert("No encontramos");
+          // }
 
         }else {
           window.alert("No encontramos una ruta.");
